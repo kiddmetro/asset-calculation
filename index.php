@@ -100,7 +100,7 @@ if ($result->num_rows > 0) {
 
 
         // Get all faults for the current asset
-        $faults_sql = "SELECT * FROM Faults WHERE asset_id = $asset_id";
+        $faults_sql = "SELECT * FROM faults WHERE asset_id = $asset_id";
         $faults_result = $db->query($faults_sql);
 
         $minor_impact = 0;
