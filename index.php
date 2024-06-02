@@ -142,10 +142,10 @@ if ($result->num_rows > 0) {
         $current_appreciation_worth = $purchase_cost + $accumulated_appreciation - $total_impact;
 
 
-        
         echo "Car Name: " . $row["name"] . "<br>";
         echo "Original Purchase Year: " . $purchase_year . "<br>";
         echo "Original Purchase Cost: $" . number_format($purchase_cost, 2) . "<br>";
+        echo "Current Cost: $" . number_format($current_cost, 2) . "<br>";
         echo "Years of Usage: " . ($current_year - $purchase_year) . "<br>";
         echo "Current Year: " . $current_year . "<br>";
         if ($depreciation_rate > 0) {
@@ -159,7 +159,6 @@ if ($result->num_rows > 0) {
             echo "No change in value.<br>";
         }
         echo "Total Fault Impact: $" . number_format($total_impact, 2) . "<br>";
-        // echo "Total Critical Fault Impact: $" . number_format($critical_impact, 2) . "<br>";
 
         $revaluation = $current_cost - $purchase_cost;
         if ($revaluation > 0) {
