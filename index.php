@@ -57,16 +57,16 @@ if (count($category_ids) < 3) {
 // }
 
 
-// $insert_minor_fault = "INSERT INTO Faults (asset_id, fault_type, fault_rating, description, reported_date) VALUES (1, 'minor', 60, 'Minor scratch on surface', '2022-05-15')";
+// $insert_minor_fault = "INSERT INTO Faults (asset_id, fault_type, fault_expense, fault_rating, description, reported_date) VALUES (1, 'minor', 15000, 60, 'Minor scratch on surface', '2022-05-15')";
 
 // if (!$db->query($insert_minor_fault)) {
 //     die("Error inserting minor fault: " . $db->error);
 // }
 
-// $insert_critical_fault = "INSERT INTO Faults (asset_id, fault_type, fault_rating, description, reported_date) VALUES (1, 'critical', 90, 'Engine failure', '2023-03-22')";
+// $insert_extreme_critical_fault = "INSERT INTO Faults (asset_id, fault_type, fault_expense, fault_rating, description, reported_date) VALUES (1, 'Extreme_critical', 27000, 100, 'Engine failure', '2023-03-22')";
 
-// if (!$db->query($insert_critical_fault)) {
-//     die("Error inserting critical fault: " . $db->error);
+// if (!$db->query($insert_extreme_critical_fault)) {
+//     die("Error inserting Extreme critical fault: " . $db->error);
 // }
 
 // SQL query to fetch the car asset data
@@ -130,12 +130,18 @@ if ($result->num_rows > 0) {
                 }
 
                 $total_impact += $fault_rating * $impact_percentage / 100 * $purchase_cost;
+
+                echo "Fault Type: " . $fault_type . "<br>";
+                echo "Fault Rating: " . $fault_rating . "<br>";
+                echo "Impact Percentage: " . ($impact_percentage * 100) . "%<br>";
             }
         }
 
         $current_depreciation_worth = $current_cost - $accumulated_depreciation - $total_impact;
         $current_appreciation_worth = $purchase_cost + $accumulated_appreciation - $total_impact;
 
+
+        
         echo "Car Name: " . $row["name"] . "<br>";
         echo "Original Purchase Year: " . $purchase_year . "<br>";
         echo "Original Purchase Cost: $" . number_format($purchase_cost, 2) . "<br>";
@@ -151,8 +157,8 @@ if ($result->num_rows > 0) {
         } else {
             echo "No change in value.<br>";
         }
-        echo "Total Minor Fault Impact: $" . number_format($minor_impact, 2) . "<br>";
-        echo "Total Critical Fault Impact: $" . number_format($critical_impact, 2) . "<br>";
+        echo "Total Fault Impact: $" . number_format($total_impact, 2) . "<br>";
+        // echo "Total Critical Fault Impact: $" . number_format($critical_impact, 2) . "<br>";
 
         $revaluation = $current_cost - $purchase_cost;
         if ($revaluation > 0) {
