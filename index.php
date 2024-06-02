@@ -111,29 +111,30 @@ if ($result->num_rows > 0) {
                 $fault_rating = $fault_row["fault_rating"];
                 $impact_percentage = 0;
 
-                switch ($fault_type) {
-                    case 'minor':
-                        $impact_percentage = 0.1;
-                        break;
-                    case 'moderate':
-                        $impact_percentage = 0.2;
-                        break;
-                    case 'major':
-                        $impact_percentage = 0.3;
-                        break;
-                    case 'critical':
-                        $impact_percentage = 0.4;
-                        break;
-                    case 'extreme_critical':
-                        $impact_percentage = 0.5;
-                        break;
+                if ($fault_type == 'insignificant' && $fault_rating >= 0 && $fault_rating < 20) {
+                    $impact_percentage = $fault_rating * 0.1 / 100;
+                } elseif ($fault_type == 'minor' && $fault_rating >= 20 && $fault_rating < 40) {
+                    $impact_percentage = $fault_rating * 0.1 / 100;
+                } elseif ($fault_type == 'moderate' && $fault_rating >= 40 && $fault_rating < 60) {
+                    $impact_percentage = $fault_rating * 0.5 / 100;
+                } elseif ($fault_type == 'major' && $fault_rating >= 60 && $fault_rating < 80) {
+                    $impact_percentage = $fault_rating * 0.7 / 100;
+                } elseif ($fault_type == 'critical' && $fault_rating >= 80 && $fault_rating < 90) {
+                    $impact_percentage = $fault_rating * 1.0 / 100;
+                } elseif ($fault_type == 'extreme_critical' && $fault_rating >= 90 && $fault_rating <= 100) {
+                    $impact_percentage = $fault_rating * 1.0 / 100;
+                }
+                else {
+                    echo "Invalid Value";
                 }
 
-                $total_impact += $fault_rating * $impact_percentage / 100 * $purchase_cost;
+                $impact_value = $impact_percentage * $purchase_cost;
+                $total_impact += $impact_value;
 
                 echo "Fault Type: " . $fault_type . "<br>";
                 echo "Fault Rating: " . $fault_rating . "<br>";
                 echo "Impact Percentage: " . ($impact_percentage * 100) . "%<br>";
+                echo "Impact Value: $" . number_format($impact_value, 2) . "<br><br>";
             }
         }
 
