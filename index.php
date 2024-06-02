@@ -103,24 +103,36 @@ if ($result->num_rows > 0) {
         $faults_sql = "SELECT * FROM faults WHERE asset_id = $asset_id";
         $faults_result = $db->query($faults_sql);
 
-        $minor_impact = 0;
-        $critical_impact = 0;
+        $total_impact = 0;
 
         if ($faults_result->num_rows > 0) {
             while ($fault_row = $faults_result->fetch_assoc()) {
                 $fault_type = $fault_row["fault_type"];
                 $fault_rating = $fault_row["fault_rating"];
+                $impact_percentage = 0;
 
-                if ($fault_type == 'minor') {
-                    $minor_impact += $fault_rating * 0.1 / 100 * $purchase_cost;
-                } elseif ($fault_type == 'critical') {
-                    $critical_impact += $fault_rating * 0.5 / 100 * $purchase_cost;
+                switch ($fault_type) {
+                    case 'minor':
+                        $impact_percentage = 0.1;
+                        break;
+                    case 'moderate':
+                        $impact_percentage = 0.2;
+                        break;
+                    case 'major':
+                        $impact_percentage = 0.3;
+                        break;
+                    case 'critical':
+                        $impact_percentage = 0.4;
+                        break;
+                    case 'extreme_critical':
+                        $impact_percentage = 0.5;
+                        break;
                 }
+
+                $total_impact += $fault_rating * $impact_percentage / 100 * $purchase_cost;
             }
         }
 
-        // Adjust current worth of the asset considering faults impact
-        $total_impact = $minor_impact + $critical_impact;
         $current_depreciation_worth = $current_cost - $accumulated_depreciation - $total_impact;
         $current_appreciation_worth = $purchase_cost + $accumulated_appreciation - $total_impact;
 
