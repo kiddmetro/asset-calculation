@@ -2,51 +2,7 @@
 
 require_once ('./config/db.php');
 
-// Inserting main categories
-$insert_main_categories = "INSERT INTO category (category_name, parent_id) VALUES
-    ('Cars', NULL),
-    ('Car Brands', NULL)";
 
-if (!$db->query($insert_main_categories)) {
-    die("Error inserting main categories: " . $db->error);
-}
-
-// Get the ID of the main categories
-$cars_category_id = $db->insert_id; // Cars category ID
-$car_brands_category_id = $cars_category_id + 1; // Car Brands category ID
-
-// Insert subcategories
-$insert_subcategories = "INSERT INTO category (category_name, parent_id) VALUES
-    ('Car Types', $cars_category_id),
-    ('Car Parts', $cars_category_id),
-    ('Car Accessories', $cars_category_id)";
-
-if (!$db->query($insert_subcategories)) {
-    die("Error inserting subcategories: " . $db->error);
-}
-
-// Insert brand categories
-$insert_brand_categories = "INSERT INTO category (category_name, parent_id) VALUES
-    ('Toyota', $car_brands_category_id),
-    ('Honda', $car_brands_category_id),
-    ('Ford', $car_brands_category_id),
-    ('Chevrolet', $car_brands_category_id)";
-
-if (!$db->query($insert_brand_categories)) {
-    die("Error inserting brand categories: " . $db->error);
-}
-
-// Get the category IDs for cars, car types, and a specific brand (e.g., Toyota)
-$get_category_ids = "SELECT category_id FROM category WHERE category_name IN ('Cars', 'Car Types', 'Toyota')";
-$result = $db->query($get_category_ids);
-$category_ids = array();
-while ($row = $result->fetch_assoc()) {
-    $category_ids[] = $row['category_id'];
-}
-
-if (count($category_ids) < 3) {
-    die("Error: Could not find necessary categories in the database.");
-}
 
 // Insert an example car asset
 // $insert_car_asset = "INSERT INTO assets (name, category, description, year_of_purchase, cost_of_asset, end_of_life, current_cost, year_of_usage, category_id) VALUES
@@ -92,7 +48,7 @@ if (count($category_ids) < 3) {
 
 
 // SQL query to fetch the car asset data
-$sql = "SELECT * FROM assets WHERE asset_id = 4 ";
+$sql = "SELECT * FROM assets WHERE asset_id = 1 ";
 $result = $db->query($sql);
 
 if ($result->num_rows > 0) {
