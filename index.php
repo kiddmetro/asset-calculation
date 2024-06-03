@@ -78,7 +78,7 @@ if ($result->num_rows > 0) {
 
 
         // echo  $accumulated_appreciation . "<br>";
-        // echo $accumulated_depreciation . "<br>";
+        echo $accumulated_depreciation . "<br>";
 
         // Get all faults for the current asset
         $faults_sql = "SELECT * FROM faults WHERE asset_id = $asset_id";
@@ -93,17 +93,17 @@ if ($result->num_rows > 0) {
                 $impact_percentage = 0;
 
                 if ($fault_type == 'insignificant' && $fault_rating >= 0 && $fault_rating < 20) {
-                    $impact_percentage = $fault_rating * 1.0 / 100;
+                    $impact_percentage = $fault_rating * 0.1 / 100;
                 } elseif ($fault_type == 'minor' && $fault_rating >= 20 && $fault_rating < 40) {
-                    $impact_percentage = $fault_rating * 1.0 / 100;
+                    $impact_percentage = $fault_rating * 0.2 / 100;
                 } elseif ($fault_type == 'moderate' && $fault_rating >= 40 && $fault_rating < 60) {
-                    $impact_percentage = $fault_rating * 1.0 / 100;
+                    $impact_percentage = $fault_rating * 0.3 / 100;
                 } elseif ($fault_type == 'major' && $fault_rating >= 60 && $fault_rating < 80) {
-                    $impact_percentage = $fault_rating * 1.0 / 100;
+                    $impact_percentage = $fault_rating * 0.4 / 100;
                 } elseif ($fault_type == 'critical' && $fault_rating >= 80 && $fault_rating < 90) {
-                    $impact_percentage = $fault_rating * 1.0 / 100;
+                    $impact_percentage = $fault_rating * 0.5 / 100;
                 } elseif ($fault_type == 'extreme_critical' && $fault_rating >= 90 && $fault_rating <= 100) {
-                    $impact_percentage = $fault_rating * 1.0 / 100;
+                    $impact_percentage = $fault_rating * 0.6 / 100;
                 }
                 else {
                     echo "Invalid Value";
@@ -114,7 +114,7 @@ if ($result->num_rows > 0) {
 
                 echo "Fault Type: " . $fault_type . "<br>";
                 echo "Fault Rating: " . $fault_rating . "<br>";
-                echo "Impact Percentage: " . ($impact_percentage * 100) . "%<br>";
+                // echo "Impact Percentage: " . ($impact_percentage) . "%<br>";
                 echo "Impact Value: $" . number_format($impact_value, 2) . "<br><br>";
             }
         }
