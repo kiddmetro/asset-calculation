@@ -25,7 +25,7 @@ require_once ('./config/db.php');
 //     die("Error inserting Extreme critical fault: " . $db->error);
 // }
 
-// $insert_insignificant_fault = "INSERT INTO Faults (asset_id, fault_type, fault_rating, description, reported_date) VALUES (1, 'insignificant',  10, 'Minor wear and tear', '2022-05-15')";
+// $insert_insignificant_fault = "INSERT INTO Faults (asset_id, fault_type, fault_rating, description, reported_date) VALUES (1, 'insignificant',  5, 'Minor wear and tear', '2022-05-15')";
 // $insert_minor_fault = "INSERT INTO Faults (asset_id, fault_type, fault_rating, description, reported_date) VALUES (1, 'minor',  30, 'Small scratch on surface', '2022-06-10')";
 // $insert_moderate_fault = "INSERT INTO Faults (asset_id, fault_type, fault_rating, description, reported_date) VALUES (1, 'moderate',  50, 'Minor engine issue', '2023-03-22')";
 // $insert_major_fault = "INSERT INTO Faults (asset_id, fault_type, fault_rating, description, reported_date) VALUES (1, 'major', 40, 'Engine failure', '2023-04-15')";
@@ -48,7 +48,7 @@ require_once ('./config/db.php');
 
 
 // SQL query to fetch the car asset data
-$sql = "SELECT * FROM assets WHERE asset_id = 1 ";
+$sql = "SELECT * FROM assets WHERE asset_id = 2 ";
 $result = $db->query($sql);
 
 if ($result->num_rows > 0) {
@@ -77,6 +77,9 @@ if ($result->num_rows > 0) {
         $accumulated_appreciation = $appreciation_rate * $appreciation_years;
 
 
+        // echo  $accumulated_appreciation . "<br>";
+        // echo $accumulated_depreciation . "<br>";
+
         // Get all faults for the current asset
         $faults_sql = "SELECT * FROM faults WHERE asset_id = $asset_id";
         $faults_result = $db->query($faults_sql);
@@ -90,7 +93,7 @@ if ($result->num_rows > 0) {
                 $impact_percentage = 0;
 
                 if ($fault_type == 'insignificant' && $fault_rating >= 0 && $fault_rating < 20) {
-                    $impact_percentage = $fault_rating * 0.1 / 100;
+                    $impact_percentage = $fault_rating * 1.0 / 100;
                 } elseif ($fault_type == 'minor' && $fault_rating >= 20 && $fault_rating < 40) {
                     $impact_percentage = $fault_rating * 1.0 / 100;
                 } elseif ($fault_type == 'moderate' && $fault_rating >= 40 && $fault_rating < 60) {
