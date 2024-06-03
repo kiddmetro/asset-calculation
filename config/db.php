@@ -22,10 +22,7 @@ $create_asset_table = $db->query('CREATE TABLE IF NOT EXISTS assets (
    year_of_purchase INT(4) NOT NULL,
    cost_of_asset INT(100) NOT NULL,
    end_of_life INT(4) NOT NULL,
-   current_cost INT(100) NOT NULL,
-   year_of_usage INT(4) NOT NULL,
-   category_id INT,
-   CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES category(category_id)
+   current_cost INT(100) NOT NULL
 ) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ENGINE=InnoDB');
 
 

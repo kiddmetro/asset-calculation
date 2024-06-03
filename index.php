@@ -5,8 +5,8 @@ require_once ('./config/db.php');
 
 
 // Insert an example car asset
-// $insert_car_asset = "INSERT INTO assets (name, category, description, year_of_purchase, cost_of_asset, end_of_life, current_cost, year_of_usage, category_id) VALUES
-//     ('Audi RS35', 'Sports', 'Audi smooth and ready for use', 2013, 2500000, 2026, 1900000, 7, $category_ids[2])";
+// $insert_car_asset = "INSERT INTO assets (name, category, description, year_of_purchase, cost_of_asset, end_of_life, current_cost) VALUES
+//     ('Audi RS35', 'Sports', 'Audi smooth and ready for use', 2013, 2500000, 2026, 1900000)";
 
 // if (!$db->query($insert_car_asset)) {
 //     die("Error inserting car asset: " . $db->error);
