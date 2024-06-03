@@ -43,7 +43,6 @@ $create_fault_table = $db->query('CREATE TABLE IF NOT EXISTS faults (
     fault_id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     asset_id INT(10) UNSIGNED NOT NULL,
     fault_type ENUM("minor", "moderate", "major", "critical", "extreme_critical") NOT NULL,
-    fault_expense DECIMAL(10,2) NOT NULL,
     fault_rating INT NOT NULL,
     description TEXT,
     reported_date DATE,

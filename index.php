@@ -48,9 +48,9 @@ if (count($category_ids) < 3) {
     die("Error: Could not find necessary categories in the database.");
 }
 
-// // Insert an example car asset
+// Insert an example car asset
 // $insert_car_asset = "INSERT INTO assets (name, category, description, year_of_purchase, cost_of_asset, end_of_life, current_cost, year_of_usage, category_id) VALUES
-//     ('Toyota Camry', 'Sedan', '2021 Model of Toyota camry with butterfly doors and tinted glass', 2022, 35000, 2032, 75000, 2, $category_ids[2])";
+//     ('Audi RS35', 'Sports', 'Audi smooth and ready for use', 2013, 2500000, 2026, 1900000, 7, $category_ids[2])";
 
 // if (!$db->query($insert_car_asset)) {
 //     die("Error inserting car asset: " . $db->error);
@@ -69,8 +69,30 @@ if (count($category_ids) < 3) {
 //     die("Error inserting Extreme critical fault: " . $db->error);
 // }
 
+// $insert_insignificant_fault = "INSERT INTO Faults (asset_id, fault_type, fault_expense, fault_rating, description, reported_date) VALUES (1, 'insignificant', 20000, 10, 'Minor wear and tear', '2022-05-15')";
+// $insert_minor_fault = "INSERT INTO Faults (asset_id, fault_type, fault_expense, fault_rating, description, reported_date) VALUES (1, 'minor', 10000, 30, 'Small scratch on surface', '2022-06-10')";
+// $insert_moderate_fault = "INSERT INTO Faults (asset_id, fault_type, fault_expense, fault_rating, description, reported_date) VALUES (1, 'moderate', 150000, 50, 'Minor engine issue', '2023-03-22')";
+// $insert_major_fault = "INSERT INTO Faults (asset_id, fault_type, fault_expense, fault_rating, description, reported_date) VALUES (1, 'major', 7000, 40, 'Engine failure', '2023-04-15')";
+
+// if (!$db->query($insert_insignificant_fault)) {
+//     die("Error inserting insignificant fault: " . $db->error);
+// }
+
+// if (!$db->query($insert_minor_fault)) {
+//     die("Error inserting minor fault: " . $db->error);
+// }
+
+// if (!$db->query($insert_moderate_fault)) {
+//     die("Error inserting moderate fault: " . $db->error);
+// }
+
+// if (!$db->query($insert_major_fault)) {
+//     die("Error inserting major fault: " . $db->error);
+// }
+
+
 // SQL query to fetch the car asset data
-$sql = "SELECT * FROM assets WHERE asset_id = 1 ";
+$sql = "SELECT * FROM assets WHERE asset_id = 4 ";
 $result = $db->query($sql);
 
 if ($result->num_rows > 0) {
@@ -114,11 +136,11 @@ if ($result->num_rows > 0) {
                 if ($fault_type == 'insignificant' && $fault_rating >= 0 && $fault_rating < 20) {
                     $impact_percentage = $fault_rating * 0.1 / 100;
                 } elseif ($fault_type == 'minor' && $fault_rating >= 20 && $fault_rating < 40) {
-                    $impact_percentage = $fault_rating * 0.1 / 100;
+                    $impact_percentage = $fault_rating * 1.0 / 100;
                 } elseif ($fault_type == 'moderate' && $fault_rating >= 40 && $fault_rating < 60) {
-                    $impact_percentage = $fault_rating * 0.5 / 100;
+                    $impact_percentage = $fault_rating * 1.0 / 100;
                 } elseif ($fault_type == 'major' && $fault_rating >= 60 && $fault_rating < 80) {
-                    $impact_percentage = $fault_rating * 0.7 / 100;
+                    $impact_percentage = $fault_rating * 1.0 / 100;
                 } elseif ($fault_type == 'critical' && $fault_rating >= 80 && $fault_rating < 90) {
                     $impact_percentage = $fault_rating * 1.0 / 100;
                 } elseif ($fault_type == 'extreme_critical' && $fault_rating >= 90 && $fault_rating <= 100) {
