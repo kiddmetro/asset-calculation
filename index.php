@@ -13,22 +13,22 @@ require_once ('./config/db.php');
 // }
 
 
-// $insert_minor_fault = "INSERT INTO Faults (asset_id, fault_type, fault_expense, fault_rating, description, reported_date) VALUES (1, 'minor', 15000, 60, 'Minor scratch on surface', '2022-05-15')";
+// $insert_minor_fault = "INSERT INTO Faults (asset_id, fault_type, fault_rating, description, reported_date) VALUES (1, 'minor', 15000, 60, 'Minor scratch on surface', '2022-05-15')";
 
 // if (!$db->query($insert_minor_fault)) {
 //     die("Error inserting minor fault: " . $db->error);
 // }
 
-// $insert_extreme_critical_fault = "INSERT INTO Faults (asset_id, fault_type, fault_expense, fault_rating, description, reported_date) VALUES (1, 'Extreme_critical', 27000, 100, 'Engine failure', '2023-03-22')";
+// $insert_extreme_critical_fault = "INSERT INTO Faults (asset_id, fault_type, fault_rating, description, reported_date) VALUES (1, 'Extreme_critical', 27000, 100, 'Engine failure', '2023-03-22')";
 
 // if (!$db->query($insert_extreme_critical_fault)) {
 //     die("Error inserting Extreme critical fault: " . $db->error);
 // }
 
-// $insert_insignificant_fault = "INSERT INTO Faults (asset_id, fault_type, fault_expense, fault_rating, description, reported_date) VALUES (1, 'insignificant', 20000, 10, 'Minor wear and tear', '2022-05-15')";
-// $insert_minor_fault = "INSERT INTO Faults (asset_id, fault_type, fault_expense, fault_rating, description, reported_date) VALUES (1, 'minor', 10000, 30, 'Small scratch on surface', '2022-06-10')";
-// $insert_moderate_fault = "INSERT INTO Faults (asset_id, fault_type, fault_expense, fault_rating, description, reported_date) VALUES (1, 'moderate', 150000, 50, 'Minor engine issue', '2023-03-22')";
-// $insert_major_fault = "INSERT INTO Faults (asset_id, fault_type, fault_expense, fault_rating, description, reported_date) VALUES (1, 'major', 7000, 40, 'Engine failure', '2023-04-15')";
+// $insert_insignificant_fault = "INSERT INTO Faults (asset_id, fault_type, fault_rating, description, reported_date) VALUES (1, 'insignificant', 20000, 10, 'Minor wear and tear', '2022-05-15')";
+// $insert_minor_fault = "INSERT INTO Faults (asset_id, fault_type, fault_rating, description, reported_date) VALUES (1, 'minor', 10000, 30, 'Small scratch on surface', '2022-06-10')";
+// $insert_moderate_fault = "INSERT INTO Faults (asset_id, fault_type, fault_rating, description, reported_date) VALUES (1, 'moderate', 150000, 50, 'Minor engine issue', '2023-03-22')";
+// $insert_major_fault = "INSERT INTO Faults (asset_id, fault_type, fault_rating, description, reported_date) VALUES (1, 'major', 7000, 40, 'Engine failure', '2023-04-15')";
 
 // if (!$db->query($insert_insignificant_fault)) {
 //     die("Error inserting insignificant fault: " . $db->error);
