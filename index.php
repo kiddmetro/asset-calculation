@@ -121,11 +121,17 @@ if ($result->num_rows > 0) {
         $accumulated_appreciation = $appreciation_rate * $appreciation_years;
 
 
-        // Get all faults for the current asset
+         // Get all faults for the current asset
         $faults_sql = "SELECT * FROM faults WHERE asset_id = $asset_id";
         $faults_result = $db->query($faults_sql);
 
-        $total_impact = 0;
+        // $total_impact = 0;
+        $insignificant_impact = 0;
+        $minor_impact = 0;
+        $moderate_impact = 0;
+        $major_impact = 0;
+        $critical_impact = 0;
+        $extreme_critical_impact = 0;
 
         if ($faults_result->num_rows > 0) {
             while ($fault_row = $faults_result->fetch_assoc()) {
@@ -134,29 +140,27 @@ if ($result->num_rows > 0) {
                 $impact_percentage = 0;
 
                 if ($fault_type == 'insignificant' && $fault_rating >= 0 && $fault_rating < 20) {
-                    $impact_percentage = $fault_rating * 0.1 / 100;
+                    $insignificant_impact += $fault_rating * 0.09 / 100 * $purchase_cost;
                 } elseif ($fault_type == 'minor' && $fault_rating >= 20 && $fault_rating < 40) {
-                    $impact_percentage = $fault_rating * 1.0 / 100;
+                    $minor_impact += $fault_rating * 0.1 / 100 * $purchase_cost;
                 } elseif ($fault_type == 'moderate' && $fault_rating >= 40 && $fault_rating < 60) {
-                    $impact_percentage = $fault_rating * 1.0 / 100;
+                    $moderate_impact += $fault_rating * 0.2 / 100 * $purchase_cost;
                 } elseif ($fault_type == 'major' && $fault_rating >= 60 && $fault_rating < 80) {
-                    $impact_percentage = $fault_rating * 1.0 / 100;
+                    $major_impact += $fault_rating * 0.3 / 100 * $purchase_cost;
                 } elseif ($fault_type == 'critical' && $fault_rating >= 80 && $fault_rating < 90) {
-                    $impact_percentage = $fault_rating * 1.0 / 100;
+                    $critical_impact += $fault_rating * 0.4 / 100 * $purchase_cost;
                 } elseif ($fault_type == 'extreme_critical' && $fault_rating >= 90 && $fault_rating <= 100) {
-                    $impact_percentage = $fault_rating * 1.0 / 100;
+                    $extreme_critical_impact += $fault_rating * 0.5 / 100 * $purchase_cost;
                 }
                 else {
                     echo "Invalid Value";
                 }
 
-                $impact_value = $impact_percentage * $purchase_cost;
-                $total_impact += $impact_value;
+                $total_impact =  $insignificant_impact + $minor_impact + $moderate_impact + $major_impact + $critical_impact + $extreme_critical_impact;
 
                 echo "Fault Type: " . $fault_type . "<br>";
                 echo "Fault Rating: " . $fault_rating . "<br>";
-                echo "Impact Percentage: " . ($impact_percentage * 100) . "%<br>";
-                echo "Impact Value: $" . number_format($impact_value, 2) . "<br><br>";
+                echo "Impact Value: $" . number_format($total_impact, 2) . "<br><br>";
             }
         }
 
