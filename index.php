@@ -119,7 +119,6 @@ if ($result->num_rows > 0) {
 
                 echo "Fault Type: " . $fault_type . "<br>";
                 echo "Fault Rating: " . $fault_rating . "<br>";
-                // echo "Impact Percentage: " . ($impact_percentage) . "%<br>";
                 echo "Impact Value: $" . number_format($total_impact, 2) . "<br><br>";
             }
         }
