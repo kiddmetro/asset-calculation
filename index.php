@@ -48,7 +48,7 @@ require_once ('./config/db.php');
 
 
 // SQL query to fetch the car asset data
-$sql = "SELECT * FROM assets WHERE asset_id = 3 ";
+$sql = "SELECT * FROM assets WHERE asset_id = 1 ";
 $result = $db->query($sql);
 
 if ($result->num_rows > 0) {
@@ -123,8 +123,12 @@ if ($result->num_rows > 0) {
             }
         }
 
-        $current_depreciation_worth = $current_cost - $accumulated_depreciation - $total_impact;
-        $current_appreciation_worth = $purchase_cost + $accumulated_appreciation - $total_impact;
+        // $current_depreciation_worth = $current_cost - $accumulated_depreciation - $total_impact;
+        // $current_appreciation_worth = $purchase_cost + $accumulated_appreciation - $total_impact;
+
+        
+        $current_depreciation_worth = $current_cost  - $total_impact;
+        $current_appreciation_worth = $purchase_cost  - $total_impact;
 
 
         echo "Car Name: " . $row["name"] . "<br>";
