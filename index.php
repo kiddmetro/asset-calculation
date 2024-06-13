@@ -76,10 +76,6 @@ if ($result->num_rows > 0) {
         $appreciation_years = $current_year - $purchase_year;
         $accumulated_appreciation = $appreciation_rate * $appreciation_years;
 
-
-        // echo  $accumulated_appreciation . "<br>";
-        echo $accumulated_depreciation . "<br>";
-
         // Get all faults for the current asset
         $faults_sql = "SELECT * FROM faults WHERE asset_id = $asset_id";
         $faults_result = $db->query($faults_sql);
@@ -123,12 +119,8 @@ if ($result->num_rows > 0) {
             }
         }
 
-        // $current_depreciation_worth = $current_cost - $accumulated_depreciation - $total_impact;
-        // $current_appreciation_worth = $purchase_cost + $accumulated_appreciation - $total_impact;
-
-        
-        $current_depreciation_worth = $current_cost  - $total_impact;
-        $current_appreciation_worth = $purchase_cost  - $total_impact;
+        $current_depreciation_worth = $current_cost - $accumulated_depreciation - $total_impact;
+        $current_appreciation_worth = $purchase_cost + $accumulated_appreciation - $total_impact;
 
 
         echo "Car Name: " . $row["name"] . "<br>";
