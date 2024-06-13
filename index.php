@@ -13,38 +13,7 @@ require_once ('./config/db.php');
 // }
 
 
-// $insert_minor_fault = "INSERT INTO Faults (asset_id, fault_type, fault_rating, description, reported_date) VALUES (1, 'minor', 60, 'Minor scratch on surface', '2022-05-15')";
 
-// if (!$db->query($insert_minor_fault)) {
-//     die("Error inserting minor fault: " . $db->error);
-// }
-
-// $insert_extreme_critical_fault = "INSERT INTO Faults (asset_id, fault_type, fault_rating, description, reported_date) VALUES (1, 'Extreme_critical', 100, 'Engine failure', '2023-03-22')";
-
-// if (!$db->query($insert_extreme_critical_fault)) {
-//     die("Error inserting Extreme critical fault: " . $db->error);
-// }
-
-// $insert_insignificant_fault = "INSERT INTO Faults (asset_id, fault_type, fault_rating, description, reported_date) VALUES (1, 'insignificant',  5, 'Minor wear and tear', '2022-05-15')";
-// $insert_minor_fault = "INSERT INTO Faults (asset_id, fault_type, fault_rating, description, reported_date) VALUES (1, 'minor',  30, 'Small scratch on surface', '2022-06-10')";
-// $insert_moderate_fault = "INSERT INTO Faults (asset_id, fault_type, fault_rating, description, reported_date) VALUES (1, 'moderate',  50, 'Minor engine issue', '2023-03-22')";
-// $insert_major_fault = "INSERT INTO Faults (asset_id, fault_type, fault_rating, description, reported_date) VALUES (1, 'major', 40, 'Engine failure', '2023-04-15')";
-
-// if (!$db->query($insert_insignificant_fault)) {
-//     die("Error inserting insignificant fault: " . $db->error);
-// }
-
-// if (!$db->query($insert_minor_fault)) {
-//     die("Error inserting minor fault: " . $db->error);
-// }
-
-// if (!$db->query($insert_moderate_fault)) {
-//     die("Error inserting moderate fault: " . $db->error);
-// }
-
-// if (!$db->query($insert_major_fault)) {
-//     die("Error inserting major fault: " . $db->error);
-// }
 
 
 // SQL query to fetch the car asset data
@@ -76,51 +45,8 @@ if ($result->num_rows > 0) {
         $appreciation_years = $current_year - $purchase_year;
         $accumulated_appreciation = $appreciation_rate * $appreciation_years;
 
-        // Get all faults for the current asset
-        $faults_sql = "SELECT * FROM faults WHERE asset_id = $asset_id";
-        $faults_result = $db->query($faults_sql);
-
-        // $total_impact = 0;
-        $insignificant_impact = 0;
-        $minor_impact = 0;
-        $moderate_impact = 0;
-        $major_impact = 0;
-        $critical_impact = 0;
-        $extreme_critical_impact = 0;
-
-        if ($faults_result->num_rows > 0) {
-            while ($fault_row = $faults_result->fetch_assoc()) {
-                $fault_type = $fault_row["fault_type"];
-                $fault_rating = $fault_row["fault_rating"];
-                $impact_percentage = 0;
-
-                if ($fault_type == 'insignificant' && $fault_rating >= 0 && $fault_rating < 20) {
-                    $insignificant_impact += $fault_rating * 0.09 / 100 * $purchase_cost;
-                } elseif ($fault_type == 'minor' && $fault_rating >= 20 && $fault_rating < 40) {
-                    $minor_impact += $fault_rating * 0.1 / 100 * $purchase_cost;
-                } elseif ($fault_type == 'moderate' && $fault_rating >= 40 && $fault_rating < 60) {
-                    $moderate_impact += $fault_rating * 0.2 / 100 * $purchase_cost;
-                } elseif ($fault_type == 'major' && $fault_rating >= 60 && $fault_rating < 80) {
-                    $major_impact += $fault_rating * 0.3 / 100 * $purchase_cost;
-                } elseif ($fault_type == 'critical' && $fault_rating >= 80 && $fault_rating < 90) {
-                    $critical_impact += $fault_rating * 0.4 / 100 * $purchase_cost;
-                } elseif ($fault_type == 'extreme_critical' && $fault_rating >= 90 && $fault_rating <= 100) {
-                    $extreme_critical_impact += $fault_rating * 0.5 / 100 * $purchase_cost;
-                }
-                else {
-                    echo "Invalid Value";
-                }
-
-                $total_impact =  $insignificant_impact + $minor_impact + $moderate_impact + $major_impact + $critical_impact + $extreme_critical_impact;
-
-                echo "Fault Type: " . $fault_type . "<br>";
-                echo "Fault Rating: " . $fault_rating . "<br>";
-                echo "Impact Value: $" . number_format($total_impact, 2) . "<br><br>";
-            }
-        }
-
-        $current_depreciation_worth = $current_cost - $accumulated_depreciation - $total_impact;
-        $current_appreciation_worth = $purchase_cost + $accumulated_appreciation - $total_impact;
+        $current_depreciation_worth = $current_cost - $accumulated_depreciation;
+        $current_appreciation_worth = $purchase_cost + $accumulated_appreciation;
 
 
         echo "Car Name: " . $row["name"] . "<br>";
@@ -139,7 +65,6 @@ if ($result->num_rows > 0) {
         } else {
             echo "No change in value.<br>";
         }
-        echo "Total Fault Impact: $" . number_format($total_impact, 2) . "<br>";
 
         $revaluation = $current_cost - $purchase_cost;
         if ($revaluation > 0) {
