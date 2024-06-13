@@ -5,8 +5,8 @@ require_once ('./config/db.php');
 
 
 // Insert an example car asset
-// $insert_car_asset = "INSERT INTO assets (name, category, description, year_of_purchase, cost_of_asset, end_of_life, current_cost) VALUES
-//     ('Audi RS35', 'Sports', 'Audi smooth and ready for use', 2013, 2500000, 2026, 1900000)";
+// $insert_car_asset = "INSERT INTO assets (name, category, description, year_of_purchase, cost_of_asset, end_of_life, current_cost, depreciation_rate, inflation_rate) VALUES
+//     ('Audi RS35', 'Sports', 'Audi smooth and ready for use', 2020, 350000, 2025, 250000, 20 , 1)";
 
 // if (!$db->query($insert_car_asset)) {
 //     die("Error inserting car asset: " . $db->error);
@@ -27,26 +27,26 @@ if ($result->num_rows > 0) {
         $purchase_cost = $row["cost_of_asset"];
         $end_of_life = $row["end_of_life"];
         $current_cost = $row["current_cost"];
+        $depreciation_percentage = $row["depreciation_percentage"];
         $current_year = date("Y");
         
         // Calculate useful life of the asset
         $useful_life = $end_of_life - $purchase_year;
 
         // Calculate depreciation and appreciation rate per year
-        $depreciation_rate = ($purchase_cost - $current_cost) / $useful_life;
-        $appreciation_rate = ($current_cost - $purchase_cost ) / $useful_life;
+        // $depreciation_rate = ($purchase_cost - $current_cost) / $useful_life;
 
         // Calculate accumulated depreciation up to the current year
-        $depreciation_years = $current_year - $purchase_year;
-        $accumulated_depreciation = $depreciation_rate * $depreciation_years;
+        // $depreciation_years = $current_year - $purchase_year;
+        // $accumulated_depreciation = $depreciation_rate * $depreciation_years;
 
 
         // Calculate accumulated appreciation up to the current year
-        $appreciation_years = $current_year - $purchase_year;
-        $accumulated_appreciation = $appreciation_rate * $appreciation_years;
+        // $appreciation_years = $current_year - $purchase_year;
+        // $accumulated_appreciation = $appreciation_rate * $appreciation_years;
 
-        $current_depreciation_worth = $current_cost - $accumulated_depreciation;
-        $current_appreciation_worth = $purchase_cost + $accumulated_appreciation;
+        // $current_depreciation_worth = $current_cost - $accumulated_depreciation;
+        // $current_appreciation_worth = $purchase_cost + $accumulated_appreciation;
 
 
         echo "Car Name: " . $row["name"] . "<br>";
@@ -55,10 +55,11 @@ if ($result->num_rows > 0) {
         echo "Current Cost: $" . number_format($current_cost, 2) . "<br>";
         echo "Years of Usage: " . ($current_year - $purchase_year) . "<br>";
         echo "Current Year: " . $current_year . "<br>";
-        if ($depreciation_rate > 0) {
+        if ($current_cost < $purchase_cost) {
+            $depreciation_rate = ($depreciation_percentage/100) * $purchase_cost;
             echo "Depreciation Per Year: $" . number_format($depreciation_rate, 2) . "<br>";
-            echo "Current Worth: $" . number_format($current_depreciation_worth, 2) . "<br>";
-        } elseif ($appreciation_rate > 0) {
+            // echo "Current Worth: $" . number_format($current_depreciation_worth, 2) . "<br>";
+        } elseif ($current_cost > $purchase_cost) {
             $current_worth = $row["current_cost"] + ($appreciation_rate * $appreciation_years);
             echo "Appreciation Per Year: $" . number_format($appreciation_rate, 2) . "<br>";
             echo "Current Worth: $" . number_format($current_appreciation_worth, 2) . "<br>";
