@@ -48,51 +48,8 @@ if (count($category_ids) < 3) {
     die("Error: Could not find necessary categories in the database.");
 }
 
-// Insert an example car asset
-// $insert_car_asset = "INSERT INTO assets (name, category, description, year_of_purchase, cost_of_asset, end_of_life, current_cost, year_of_usage, category_id) VALUES
-//     ('Audi RS35', 'Sports', 'Audi smooth and ready for use', 2013, 2500000, 2026, 1900000, 7, $category_ids[2])";
-
-// if (!$db->query($insert_car_asset)) {
-//     die("Error inserting car asset: " . $db->error);
-// }
-
-
-// $insert_minor_fault = "INSERT INTO Faults (asset_id, fault_type, fault_expense, fault_rating, description, reported_date) VALUES (1, 'minor', 15000, 60, 'Minor scratch on surface', '2022-05-15')";
-
-// if (!$db->query($insert_minor_fault)) {
-//     die("Error inserting minor fault: " . $db->error);
-// }
-
-// $insert_extreme_critical_fault = "INSERT INTO Faults (asset_id, fault_type, fault_expense, fault_rating, description, reported_date) VALUES (1, 'Extreme_critical', 27000, 100, 'Engine failure', '2023-03-22')";
-
-// if (!$db->query($insert_extreme_critical_fault)) {
-//     die("Error inserting Extreme critical fault: " . $db->error);
-// }
-
-// $insert_insignificant_fault = "INSERT INTO Faults (asset_id, fault_type, fault_expense, fault_rating, description, reported_date) VALUES (1, 'insignificant', 20000, 10, 'Minor wear and tear', '2022-05-15')";
-// $insert_minor_fault = "INSERT INTO Faults (asset_id, fault_type, fault_expense, fault_rating, description, reported_date) VALUES (1, 'minor', 10000, 30, 'Small scratch on surface', '2022-06-10')";
-// $insert_moderate_fault = "INSERT INTO Faults (asset_id, fault_type, fault_expense, fault_rating, description, reported_date) VALUES (1, 'moderate', 150000, 50, 'Minor engine issue', '2023-03-22')";
-// $insert_major_fault = "INSERT INTO Faults (asset_id, fault_type, fault_expense, fault_rating, description, reported_date) VALUES (1, 'major', 7000, 40, 'Engine failure', '2023-04-15')";
-
-// if (!$db->query($insert_insignificant_fault)) {
-//     die("Error inserting insignificant fault: " . $db->error);
-// }
-
-// if (!$db->query($insert_minor_fault)) {
-//     die("Error inserting minor fault: " . $db->error);
-// }
-
-// if (!$db->query($insert_moderate_fault)) {
-//     die("Error inserting moderate fault: " . $db->error);
-// }
-
-// if (!$db->query($insert_major_fault)) {
-//     die("Error inserting major fault: " . $db->error);
-// }
-
-
 // SQL query to fetch the car asset data
-$sql = "SELECT * FROM assets WHERE asset_id = 4 ";
+$sql = "SELECT * FROM assets WHERE asset_id = 2 ";
 $result = $db->query($sql);
 
 if ($result->num_rows > 0) {
@@ -102,71 +59,11 @@ if ($result->num_rows > 0) {
         $purchase_cost = $row["cost_of_asset"];
         $end_of_life = $row["end_of_life"];
         $current_cost = $row["current_cost"];
+        $depreciation_percentage = $row["depreciation_percentage"];
         $current_year = date("Y");
-        
+
         // Calculate useful life of the asset
         $useful_life = $end_of_life - $purchase_year;
-
-        // Calculate depreciation and appreciation rate per year
-        $depreciation_rate = ($purchase_cost - $current_cost) / $useful_life;
-        $appreciation_rate = ($current_cost - $purchase_cost ) / $useful_life;
-
-        // Calculate accumulated depreciation up to the current year
-        $depreciation_years = $current_year - $purchase_year;
-        $accumulated_depreciation = $depreciation_rate * $depreciation_years;
-
-
-        // Calculate accumulated appreciation up to the current year
-        $appreciation_years = $current_year - $purchase_year;
-        $accumulated_appreciation = $appreciation_rate * $appreciation_years;
-
-
-         // Get all faults for the current asset
-        $faults_sql = "SELECT * FROM faults WHERE asset_id = $asset_id";
-        $faults_result = $db->query($faults_sql);
-
-        // $total_impact = 0;
-        $insignificant_impact = 0;
-        $minor_impact = 0;
-        $moderate_impact = 0;
-        $major_impact = 0;
-        $critical_impact = 0;
-        $extreme_critical_impact = 0;
-
-        if ($faults_result->num_rows > 0) {
-            while ($fault_row = $faults_result->fetch_assoc()) {
-                $fault_type = $fault_row["fault_type"];
-                $fault_rating = $fault_row["fault_rating"];
-                $impact_percentage = 0;
-
-                if ($fault_type == 'insignificant' && $fault_rating >= 0 && $fault_rating < 20) {
-                    $insignificant_impact += $fault_rating * 0.09 / 100 * $purchase_cost;
-                } elseif ($fault_type == 'minor' && $fault_rating >= 20 && $fault_rating < 40) {
-                    $minor_impact += $fault_rating * 0.1 / 100 * $purchase_cost;
-                } elseif ($fault_type == 'moderate' && $fault_rating >= 40 && $fault_rating < 60) {
-                    $moderate_impact += $fault_rating * 0.2 / 100 * $purchase_cost;
-                } elseif ($fault_type == 'major' && $fault_rating >= 60 && $fault_rating < 80) {
-                    $major_impact += $fault_rating * 0.3 / 100 * $purchase_cost;
-                } elseif ($fault_type == 'critical' && $fault_rating >= 80 && $fault_rating < 90) {
-                    $critical_impact += $fault_rating * 0.4 / 100 * $purchase_cost;
-                } elseif ($fault_type == 'extreme_critical' && $fault_rating >= 90 && $fault_rating <= 100) {
-                    $extreme_critical_impact += $fault_rating * 0.5 / 100 * $purchase_cost;
-                }
-                else {
-                    echo "Invalid Value";
-                }
-
-                $total_impact =  $insignificant_impact + $minor_impact + $moderate_impact + $major_impact + $critical_impact + $extreme_critical_impact;
-
-                echo "Fault Type: " . $fault_type . "<br>";
-                echo "Fault Rating: " . $fault_rating . "<br>";
-                echo "Impact Value: $" . number_format($total_impact, 2) . "<br><br>";
-            }
-        }
-
-        $current_depreciation_worth = $current_cost - $accumulated_depreciation - $total_impact;
-        $current_appreciation_worth = $purchase_cost + $accumulated_appreciation - $total_impact;
-
 
         echo "Car Name: " . $row["name"] . "<br>";
         echo "Original Purchase Year: " . $purchase_year . "<br>";
@@ -174,25 +71,67 @@ if ($result->num_rows > 0) {
         echo "Current Cost: $" . number_format($current_cost, 2) . "<br>";
         echo "Years of Usage: " . ($current_year - $purchase_year) . "<br>";
         echo "Current Year: " . $current_year . "<br>";
-        if ($depreciation_rate > 0) {
-            echo "Depreciation Per Year: $" . number_format($depreciation_rate, 2) . "<br>";
-            echo "Current Worth: $" . number_format($current_depreciation_worth, 2) . "<br>";
-        } elseif ($appreciation_rate > 0) {
-            $current_worth = $row["current_cost"] + ($appreciation_rate * $appreciation_years);
-            echo "Appreciation Per Year: $" . number_format($appreciation_rate, 2) . "<br>";
-            echo "Current Worth: $" . number_format($current_appreciation_worth, 2) . "<br>";
+
+        if ($current_cost < $purchase_cost) {
+            // Depreciation logic using reducing balance method
+            $depreciated_value = $purchase_cost;
+            $next_year = $purchase_year;
+
+            echo "Depreciation Rate: " . $depreciation_percentage . "% per year<br><br>";
+
+            while ($next_year <= $end_of_life) {
+                $depreciation = ($depreciation_percentage / 100) * $depreciated_value;
+                $depreciated_value -= $depreciation;
+
+                if ($depreciated_value < 0) {
+                    $depreciated_value = 0;
+                }
+
+                echo "Depreciation for the year " . $next_year . ": $" . number_format($depreciation, 2) . "<br>";
+                echo "Net Book Value at the end of the year " . $next_year . ": $" . number_format($depreciated_value, 2) . "<br><br>";
+
+                if ($next_year == $current_year) {
+                    $netbook_value = $depreciated_value;
+                }
+
+                $next_year++;
+            }
+
+            if (isset($netbook_value)) {
+                echo "<br>Net Book Value in the current year (" . $current_year . "): $" . number_format($netbook_value, 2) . "<br><br>";
+
+                $inc_dec_netbook = $current_cost - $netbook_value;
+                echo "Increase/(Decrease) Net Book Value: $" . number_format($inc_dec_netbook, 2) . "<br><br>";
+            }
+        } elseif ($current_cost > $purchase_cost) {
+            // Appreciation logic
+            $appreciated_value = $purchase_cost;
+            $next_year = $purchase_year;
+
+            echo "Appreciation Rate: " . $depreciation_percentage . "% per year<br><br>";
+
+            while ($next_year <= $current_year) {
+                $appreciation = ($depreciation_percentage / 100) * $appreciated_value;
+                $appreciated_value += $appreciation;
+
+                echo "Appreciation for the year " . $next_year . ": $" . number_format($appreciation, 2) . "<br>";
+                echo "Net Book Value in the year " . $next_year . ": $" . number_format($appreciated_value, 2) . "<br>";
+
+                if ($next_year == $current_year) {
+                    $netbook_value = $appreciated_value;
+                }
+
+                $next_year++;
+            }
+
+            if (isset($netbook_value)) {
+                echo "<br>Net Book Value in the current year (" . $current_year . "): $" . number_format($netbook_value, 2) . "<br><br>";
+
+                $inc_dec_netbook = $current_cost - $netbook_value;
+                echo "Increase/(Decrease) Net Book Value: $" . number_format($inc_dec_netbook, 2) . "<br><br>";
+            }
         } else {
             echo "No change in value.<br>";
-        }
-        echo "Total Fault Impact: $" . number_format($total_impact, 2) . "<br>";
-
-        $revaluation = $current_cost - $purchase_cost;
-        if ($revaluation > 0) {
-            echo "Revaluation: Asset has appreciated by $" . number_format($revaluation, 2) . "<br>";
-        } elseif ($revaluation < 0) {
-            echo "Revaluation: Asset has depreciated by $" . number_format(abs($revaluation), 2) . "<br>";
-        } else {
-            echo "Revaluation: No change in value.<br>";
         }
     }
 } else {
