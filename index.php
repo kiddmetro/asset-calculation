@@ -5,8 +5,7 @@ require_once ('./config/db.php');
 
 
 // Insert an example car asset
-// $insert_car_asset = "INSERT INTO assets (name, category, description, year_of_purchase, cost_of_asset, end_of_life, current_cost, depreciation_rate, inflation_rate) VALUES
-//     ('Audi RS35', 'Sports', 'Audi smooth and ready for use', 2020, 350000, 2025, 250000, 20 , 1)";
+// $insert_car_asset = "cccc";
 
 // if (!$db->query($insert_car_asset)) {
 //     die("Error inserting car asset: " . $db->error);
@@ -17,7 +16,7 @@ require_once ('./config/db.php');
 
 
 // SQL query to fetch the car asset data
-$sql = "SELECT * FROM assets WHERE asset_id = 3 ";
+$sql = "SELECT * FROM assets WHERE asset_id = 2 ";
 $result = $db->query($sql);
 
 if ($result->num_rows > 0) {
