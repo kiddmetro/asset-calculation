@@ -24,18 +24,16 @@ $create_category_table = $db->query('CREATE TABLE IF NOT EXISTS category (
 
 // CREATE ASSET TABLE IN DATABASE
 $create_asset_table = $db->query('CREATE TABLE IF NOT EXISTS assets (
-   asset_id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-   name VARCHAR(50) NOT NULL, 
-   category VARCHAR(50) NOT NULL, 
-   description VARCHAR(255) NOT NULL,
-   year_of_purchase INT(4) NOT NULL,
-   cost_of_asset INT(100) NOT NULL,
-   end_of_life INT(4) NOT NULL,
-   current_cost INT(100) NOT NULL,
-   year_of_usage INT(4) NOT NULL,
-   category_id INT,
-   CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES category(category_id)
-) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ENGINE=InnoDB');
-
+    asset_id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL, 
+    category VARCHAR(50) NOT NULL, 
+    description VARCHAR(255) NOT NULL,
+    year_of_purchase INT(4) NOT NULL,
+    cost_of_asset INT(100) NOT NULL,
+    end_of_life INT(4) NOT NULL,
+    current_cost INT(100) NOT NULL,
+    depreciation_percentage INT(10) NOT NULL,
+    inflation_rate INT(10) NOT NULL
+ ) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ENGINE=InnoDB');
 
 ?>
