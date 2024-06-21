@@ -4,17 +4,6 @@ require_once ('./config/db.php');
 
 
 
-// Insert an example car asset
-// $insert_car_asset = "cccc";
-
-// if (!$db->query($insert_car_asset)) {
-//     die("Error inserting car asset: " . $db->error);
-// }
-
-
-
-
-
 // SQL query to fetch the car asset data
 $sql = "SELECT * FROM assets WHERE asset_id = 2 ";
 $result = $db->query($sql);
@@ -72,26 +61,20 @@ if ($result->num_rows > 0) {
             }
         } elseif ($current_cost > $purchase_cost) {
             // Appreciation logic
-            $revaluation_increment = $current_cost - $purchase_cost;
-            $depreciated_value = $current_cost;
-            $next_year = $current_year;
+            $appreciated_value = $purchase_cost;
+            $next_year = $purchase_year;
 
-            echo "Revalued Amount: $" . number_format($current_cost, 2) . "<br>";
-            echo "Depreciation Rate: " . $depreciation_percentage . "% per year<br><br>";
+            echo "Appreciation Rate: " . $depreciation_percentage . "% per year<br><br>";
 
-            while ($next_year <= $end_of_life) {
-                $depreciation = ($depreciation_percentage / 100) * $depreciated_value;
-                $depreciated_value -= $depreciation;
+            while ($next_year <= $current_year) {
+                $appreciation = ($depreciation_percentage / 100) * $appreciated_value;
+                $appreciated_value += $appreciation;
 
-                if ($depreciated_value < 0) {
-                    $depreciated_value = 0;
-                }
-
-                echo "Depreciation for the year " . $next_year . ": $" . number_format($depreciation, 2) . "<br>";
-                echo "Net Book Value in the year " . $next_year . ": $" . number_format($depreciated_value, 2) . "<br>";
+                echo "Appreciation for the year " . $next_year . ": $" . number_format($appreciation, 2) . "<br>";
+                echo "Net Book Value in the year " . $next_year . ": $" . number_format($appreciated_value, 2) . "<br>";
 
                 if ($next_year == $current_year) {
-                    $netbook_value = $depreciated_value;
+                    $netbook_value = $appreciated_value;
                 }
 
                 $next_year++;
