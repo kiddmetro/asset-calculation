@@ -16,7 +16,9 @@ if ($result->num_rows > 0) {
         $end_of_life = $row["end_of_life"];
         $current_cost = $row["current_cost"];
         $depreciation_percentage = $row["depreciation_percentage"];
+        $depreciation_percentage = $row["depreciation_percentage"];
         $current_year = date("Y");
+
 
         // Calculate useful life of the asset
         $useful_life = $end_of_life - $purchase_year;
