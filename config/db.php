@@ -23,11 +23,7 @@ $create_asset_table = $db->query('CREATE TABLE IF NOT EXISTS assets (
    cost_of_asset INT(100) NOT NULL,
    end_of_life INT(4) NOT NULL,
    current_cost INT(100) NOT NULL,
-   depreciation_percentage INT(10) NOT NULL,
-   inflation_rate INT(10) NOT NULL
+   depreciation_percentage INT(10) NOT NULL
 ) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ENGINE=InnoDB');
-
-
-
 
 ?>

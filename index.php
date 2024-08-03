@@ -31,7 +31,7 @@ if ($result->num_rows > 0) {
         echo "Current Year: " . $current_year . "<br>";
 
         if ($current_cost < $purchase_cost) {
-            // Depreciation logic using reducing balance method
+            // Asset Calculation NLogic
             $depreciated_value = $purchase_cost;
             $next_year = $purchase_year;
 
@@ -61,33 +61,6 @@ if ($result->num_rows > 0) {
                 $inc_dec_netbook = $current_cost - $netbook_value;
                 echo "Increase/(Decrease) Net Book Value: $" . number_format($inc_dec_netbook, 2) . "<br><br>";
             }
-        // } elseif ($current_cost > $purchase_cost) {
-            // Appreciation logic
-            // $appreciated_value = $purchase_cost;
-            // $next_year = $purchase_year;
-
-            // echo "Appreciation Rate: " . $depreciation_percentage . "% per year<br><br>";
-
-            // while ($next_year <= $current_year) {
-            //     $appreciation = ($depreciation_percentage / 100) * $appreciated_value;
-            //     $appreciated_value += $appreciation;
-
-            //     echo "Appreciation for the year " . $next_year . ": $" . number_format($appreciation, 2) . "<br>";
-            //     echo "Net Book Value in the year " . $next_year . ": $" . number_format($appreciated_value, 2) . "<br>";
-
-            //     if ($next_year == $current_year) {
-            //         $netbook_value = $appreciated_value;
-            //     }
-
-            //     $next_year++;
-            // }
-
-            // if (isset($netbook_value)) {
-            //     echo "<br>Net Book Value in the current year (" . $current_year . "): $" . number_format($netbook_value, 2) . "<br><br>";
-
-            //     $inc_dec_netbook = $current_cost - $netbook_value;
-            //     echo "Increase/(Decrease) Net Book Value: $" . number_format($inc_dec_netbook, 2) . "<br><br>";
-            // }
         } else {
             echo "No change in value.<br>";
         }
