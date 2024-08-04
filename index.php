@@ -3,7 +3,7 @@
 require_once ('./config/db.php');
 
 // SQL query to fetch the car asset data
-$sql = "SELECT * FROM assets WHERE asset_id = 1 ";
+$sql = "SELECT * FROM assets WHERE asset_id = 3 ";
 $result = $db->query($sql);
 
 if ($result->num_rows > 0) {
@@ -17,29 +17,28 @@ if ($result->num_rows > 0) {
 
         // Calculate useful life of the asset based on depreciation percentage
         $useful_life = 100 / $depreciation_percentage;
-        $end_of_life = $purchase_year + $useful_life;
+        $end_of_life = round($purchase_year + $useful_life);
 
         // Update the end_of_life in the database
-        // $update_sql = "UPDATE assets SET end_of_life = $end_of_life WHERE asset_id = $asset_id";
-        // $db->query($update_sql);
+        $update_sql = "UPDATE assets SET end_of_life = $end_of_life WHERE asset_id = $asset_id";
+        $db->query($update_sql);
+
+        // Calculate years of usage
+        $years_of_usage = round($end_of_life - $purchase_year);
 
         echo "Car Name: " . $row["name"] . "<br>";
         echo "Original Purchase Year: " . $purchase_year . "<br>";
         echo "Original Purchase Cost: $" . number_format($purchase_cost, 2) . "<br>";
         echo "Current Cost: $" . number_format($current_cost, 2) . "<br>";
-        echo "Years of Usage: " . min($end_of_life - $purchase_year , $useful_life) . "<br>";
+        echo "Years of Usage: " . $years_of_usage . "<br>";
         echo "Current Year: " . $current_year . "<br>";
         echo "End of Life: " . $end_of_life . "<br>";
 
         // Calculate annual depreciation expense
         $annual_depreciation_expense = $purchase_cost / $useful_life;
 
-        // Calculate salvage value (assuming full depreciation)
-        $salvage_value = $purchase_cost - ($annual_depreciation_expense * $useful_life);
-
         echo "Depreciation Rate: " . $depreciation_percentage . "% per year<br><br>";
         echo "Annual Depreciation Expense: $" . number_format($annual_depreciation_expense, 2) . "<br>";
-        echo "Salvage Value: $" . number_format($salvage_value, 2) . "<br><br>";
 
         // Asset Calculation Logic
         $depreciated_value = $purchase_cost;
