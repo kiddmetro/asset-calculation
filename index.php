@@ -3,7 +3,7 @@
 require_once ('./config/db.php');
 
 // SQL query to fetch the car asset data
-$sql = "SELECT * FROM assets WHERE asset_id = 3 ";
+$sql = "SELECT * FROM assets WHERE asset_id = 4 ";
 $result = $db->query($sql);
 
 if ($result->num_rows > 0) {
@@ -38,7 +38,7 @@ if ($result->num_rows > 0) {
         $annual_depreciation_expense = $purchase_cost / $useful_life;
 
         echo "Depreciation Rate: " . $depreciation_percentage . "% per year<br><br>";
-        echo "Annual Depreciation Expense: $" . number_format($annual_depreciation_expense, 2) . "<br>";
+        echo "Annual Depreciation Expense: $" . number_format($annual_depreciation_expense, 2) . "<br><br>";
 
         // Asset Calculation Logic
         $depreciated_value = $purchase_cost;
@@ -69,6 +69,57 @@ if ($result->num_rows > 0) {
 } else {
     echo "0 results";
 }
+
+
+
+// Initialize variables to hold total costs and counts
+$totalCarsCost = $totalFurnitureCost = $totalElectronicsCost = 0;
+$countCars = $countFurniture = $countElectronics = 0;
+
+// SQL query to fetch all asset data
+$sql = "SELECT category, cost_of_asset FROM assets";
+$result = $db->query($sql);
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $category = $row["category"];
+        $purchase_cost = $row["cost_of_asset"];
+
+        // Add the purchase cost to the corresponding category total and increment the count
+        switch ($category) {
+            case 'Cars':
+                $totalCarsCost += $purchase_cost;
+                $countCars++;
+                break;
+            case 'Furniture':
+                $totalFurnitureCost += $purchase_cost;
+                $countFurniture++;
+                break;
+            case 'Electronics':
+                $totalElectronicsCost += $purchase_cost;
+                $countElectronics++;
+                break;
+        }
+    }
+
+    // Calculate the average purchase cost for each category
+    $averageCarsCost = ($countCars > 0) ? $totalCarsCost / $countCars : 0;
+    $averageFurnitureCost = ($countFurniture > 0) ? $totalFurnitureCost / $countFurniture : 0;
+    $averageElectronicsCost = ($countElectronics > 0) ? $totalElectronicsCost / $countElectronics : 0;
+
+    // Display the results
+    echo "<br>Total Purchase Cost of Cars: $" . number_format($totalCarsCost, 2) . "<br>";
+    echo "Average Purchase Cost of Cars: $" . number_format($averageCarsCost, 2) . "<br><br>";
+
+    echo "Total Purchase Cost of Furniture: $" . number_format($totalFurnitureCost, 2) . "<br>";
+    echo "Average Purchase Cost of Furniture: $" . number_format($averageFurnitureCost, 2) . "<br><br>";
+
+    echo "Total Purchase Cost of Electronics: $" . number_format($totalElectronicsCost, 2) . "<br>";
+    echo "Average Purchase Cost of Electronics: $" . number_format($averageElectronicsCost, 2) . "<br><br>";
+} else {
+    echo "0 results";
+}
+
 
 ?>
 
