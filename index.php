@@ -3,7 +3,7 @@
 require_once ('./config/db.php');
 
 // SQL query to fetch the car asset data
-$sql = "SELECT * FROM assets WHERE asset_id = 4 ";
+$sql = "SELECT * FROM assets WHERE asset_id = 6";
 $result = $db->query($sql);
 
 if ($result->num_rows > 0) {
@@ -71,6 +71,7 @@ if ($result->num_rows > 0) {
 }
 
 
+// CALCULATION OF INITIAL PURCAHSE COST OF ASSETS 
 
 // Initialize variables to hold total costs and counts
 $totalCarsCost = $totalFurnitureCost = $totalElectronicsCost = 0;
@@ -120,6 +121,58 @@ if ($result->num_rows > 0) {
     echo "0 results";
 }
 
+
+// SQL query to count the total number of assets for each category
+$sql = "SELECT category, COUNT(*) AS total_assets FROM assets GROUP BY category";
+$result = $db->query($sql);
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $category = $row["category"];
+        $total_assets = $row["total_assets"];
+
+        // Display the total number of assets for each category with the correct format
+        echo "Total number of " . $category . ": " . $total_assets . "<br>";
+    }
+} else {
+    echo "0 results";
+}
+
+
+// Initialize arrays to store total useful life and counts for each category
+$totalUsefulLife = [];
+$countAssets = [];
+
+// SQL query to fetch all assets
+$sql = "SELECT category, depreciation_percentage FROM assets";
+$result = $db->query($sql);
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $category = $row["category"];
+        $depreciation_percentage = $row["depreciation_percentage"];
+
+        // Calculate useful life of the asset
+        $useful_life = 100 / $depreciation_percentage;
+
+        // Add the useful life to the total for the category and increment the count
+        if (!isset($totalUsefulLife[$category])) {
+            $totalUsefulLife[$category] = 0;
+            $countAssets[$category] = 0;
+        }
+
+        $totalUsefulLife[$category] += $useful_life;
+        $countAssets[$category]++;
+    }
+
+    // Calculate and display the average useful life for each category
+    foreach ($totalUsefulLife as $category => $totalLife) {
+        $averageUsefulLife = $totalLife / $countAssets[$category];
+        echo "Average Useful Life of " . $category . " assets: " . number_format($averageUsefulLife, 2) . " years<br>";
+    }
+} else {
+    echo "0 results";
+}
 
 ?>
 
