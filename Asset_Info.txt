@@ -1,0 +1,7 @@
+Machine & plant = 20% =5years
+Office equipment = 20% = 5 years
+Stationary = 25% = 4 years 
+Furniture = 25% = 4 years 
+Software = 20% = 5 years 
+Vehicle (office) = 25% = 4 years 
+Vehicle (field ) = 33.13% = 3 years
